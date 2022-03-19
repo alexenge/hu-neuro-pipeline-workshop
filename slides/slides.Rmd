@@ -1,0 +1,239 @@
+---
+title:          "`hu-neuro-pipeline`"
+subtitle: |
+  A Python implementation of the single trial EEG pipeline by Frömer et al.
+  (*Front. Neurosci.*, 2018)
+author:         "Alexander Enge"
+date:           "06/04/2022"
+institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
+classoption:    "t"
+bibliography:   "references.bib"
+csl:            "template/apa.csl"
+output:
+  beamer_presentation:
+    includes:
+      in_header: "template/hu_template.tex"
+---
+
+## Why Python?
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
+library(here)
+knitr::include_graphics(here("slides/figures/venn.png"))
+```
+
+
+## Installation
+
+For Python users:
+
+```{bash, eval=FALSE}
+# Install via the command line from the Python Packaging Index (PyPI)
+python3 -m pip install hu-neuro-pipeline
+```
+
+For R users:
+
+```{r, eval=FALSE}
+# Install reticulate for interfacing with Python from R
+install.packages("reticulate")
+
+# Install the Miniconda Python distribution
+reticulate::install_miniconda()
+
+# Install the actual package
+reticulate::py_install("hu-neuro-pipeline", pip = TRUE, python_version = "3.8")
+```
+
+\bigskip
+
+```{r, echo=FALSE, fig.align="right", out.width="15%"}
+knitr::include_graphics(here("slides/figures/reticulate.png"))
+```
+
+## General usage
+
+```{r, eval=FALSE}
+# Import the Python package
+pipeline <- reticulate::import("pipeline")
+
+# Run the pipeline
+res <- pipeline$group_pipeline(...)
+```
+
+## A simple example
+
+```{r, eval=FALSE, cache=TRUE}
+# Import the Python package
+pipeline <- reticulate::import("pipeline")
+
+# Run the pipeline
+res <- pipeline$group_pipeline(
+  # Input/output paths
+  vhdr_files = "data/raw",
+  log_files = "data/log",
+  output_dir = "output",
+  # Preprocessing options
+  ocular_correction = "data/cali",
+  # Epoching options
+  triggers = c(201:208, 211:218),
+  components = list(
+    "name" = c("N2", "P3b"),
+    "tmin" = c(0.25, 0.4),
+    "tmax" = c(0.35, 0.55),
+    "roi" = list(
+      c("FC1", "FC2", "C1", "C2", "Cz"),
+      c("CP3", "CP1", "CPz", "CP2", "CP4", "P3", "Pz", "P4", "PO3", "POz", "PO4")
+    )
+  ),
+  # Averaging options
+  average_by = c("n_b", "n_b/DeviantPosRL")
+)
+```
+
+## Pipeline inputs
+
+```{r, eval=FALSE}
+# Input/output paths
+vhdr_files = "data/raw",
+log_files = "data/log",
+output_dir = "output",
+```
+
+- Directory or list of raw EEG files (`.vhdr`)
+
+- Directory or list of behavioral log files (`.txt`/`.tsv`/`.csv`)
+
+- Output directory
+
+## Pipeline inputs
+
+```{r, eval=FALSE}
+# Preprocessing options
+ocular_correction = "data/cali",
+```
+
+- Ocular correction:
+
+    - Path or list of BESA files (`.matrix`) or
+
+    - Name of an ICA method (default: `"fastica"`)
+
+- Default bandpass filter (0.1--40 Hz)
+
+## Pipeline inputs
+
+```{r, eval=FALSE}
+# Epoching options
+triggers = c(201:208, 211:218),
+components = list(
+  "name" = c("N2", "P3b"),
+  "tmin" = c(0.25, 0.4),
+  "tmax" = c(0.35, 0.55),
+  "roi" = list(
+    c("FC1", "FC2", "C1", "C2", "Cz"),
+    c("CP3", "CP1", "CPz", "CP2", "CP4", "P3", "Pz", "P4", "PO3", "POz", "PO4")
+  )
+),
+```
+
+- List of numerical EEG triggers
+
+- List of ERP component definitions:
+
+    - `name`: Column names for each component
+
+    - `tmin` + `tmax`: Onset and offset times (in s)
+
+    - `roi`: List of channel names for each component
+
+## Pipeline inputs
+
+```{r, eval=FALSE}
+# Averaging options
+average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
+```
+
+- List of column names (for main effects) and combinations of column names (for interaction effects, seperated by `"/"`)
+
+## More Pipeline inputs
+
+- Downsampling (`downsample_sfreq`)
+
+- Interpolate bad channels (`bad_channels`)
+
+- Frequency filter (`highpass_freq`, `lowpass_freq`)
+
+- Epoch duration (`epochs_tmin`, `epochs_tmax`)
+
+- Baseline duration (`baseline`)
+
+- Skip log file rows (`skip_log_rows`, `skip_log_conditions`)
+
+- Threshold for artifact rejection (`reject_peak_to_peak`)
+
+\bigskip\tiny
+
+See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/inputs.md
+
+## Pipeline outputs
+
+```{r, message=FALSE, warning=FALSE}
+# Single trial data frame
+library(tidyverse)
+trials <- read_csv("output/trials.csv") # res[[1]]
+print(trials)
+```
+
+## Pipeline outputs
+
+```{r, results="hold", out.width="50%"}
+# Check single trial N2 mean amplitudes
+summary(trials$N2)
+plot(density(trials$N2, na.rm = TRUE))
+```
+
+## Pipeline outputs
+
+```{r}
+# Linear mixed-effects model
+form <- N2 ~ n_b * DeviantPosRL + (1 | participant_id)
+mod <- lme4::lmer(form, trials)
+summary(mod)
+```
+
+## Pipeline outputs
+
+```{r, eval=FALSE, out.width="50%", warning=FALSE}
+# Plot single trial N2 mean amplitudes
+trials %>%
+  ggplot(aes(x = n_b, y = N2, color = DeviantPosRL)) +
+  geom_point(position = position_jitterdodge(0.3), alpha = 0.01) +
+  stat_summary(
+    geom = "pointrange",
+    fun.data = mean_se,
+    position = position_dodge(0.75)
+  )
+```
+
+## Future directions
+
+- Automated tests
+
+- Better HTML reports
+
+- Mixed models with `pymer4` (?)
+
+- New flavors of permutation tests:
+
+    - Cluster test on ANOVAs or mixed models [@frossard2021]
+
+    - Cluster depth test [@frossard2022]
+
+- BIDS interface
+
+- Command line interface + Docker app
+
+## References
+
+\scriptsize
