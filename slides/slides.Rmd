@@ -63,7 +63,7 @@ res <- pipeline$group_pipeline(...)
 
 ## A simple example
 
-```{r, eval=FALSE, cache=TRUE}
+```{r, eval=FALSE}
 # Import the Python package
 pipeline <- reticulate::import("pipeline")
 
@@ -166,7 +166,7 @@ average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 
 - Epoch duration (`epochs_tmin`, `epochs_tmax`)
 
-- Baseline duration (`baseline`)
+- Baseline duration (`baseline_tmin`, `baseline_tmax`)
 
 - Skip log file rows (`skip_log_rows`, `skip_log_conditions`)
 
@@ -178,17 +178,34 @@ See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/inputs.md
 
 ## Pipeline outputs
 
+Extract directly from the pipeline run:
+
+```{r, eval=FALSE}
+trials <- res[[1]]   # Single trial data frame
+evokeds <- res[[2]]  # Evokeds data frame
+config <- res[[3]]   # List of pipeline options
+```
+
+Or read from the output directory:
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+trials <- read_csv("output/trials.csv")
+evokeds <- read_csv("output/ave.csv")
+config <- jsonlite::read_json("output/config.json")
+```
+
+## Pipeline outputs
+
 ```{r, message=FALSE, warning=FALSE}
 # Single trial data frame
-library(tidyverse)
-trials <- read_csv("output/trials.csv") # res[[1]]
 print(trials)
 ```
 
 ## Pipeline outputs
 
 ```{r, results="hold", out.width="50%"}
-# Check single trial N2 mean amplitudes
+# Single trial N2 mean amplitudes
 summary(trials$N2)
 plot(density(trials$N2, na.rm = TRUE))
 ```
@@ -204,19 +221,160 @@ summary(mod)
 
 ## Pipeline outputs
 
-```{r, eval=FALSE, out.width="50%", warning=FALSE}
-# Plot single trial N2 mean amplitudes
+```{r, eval=TRUE, out.width="50%", message=FALSE, warning=FALSE}
+# Single trial N2 mean amplitudes by condition
 trials %>%
-  ggplot(aes(x = n_b, y = N2, color = DeviantPosRL)) +
-  geom_point(position = position_jitterdodge(0.3), alpha = 0.01) +
+  ggplot(aes(x = DeviantPosRL, y = N2, color = n_b, group = n_b)) +
+  geom_point(position = position_jitterdodge(0.3), alpha = 0.1) +
   stat_summary(
-    geom = "pointrange",
-    fun.data = mean_se,
+    geom = "line",
+    size = 2.,
     position = position_dodge(0.75)
-  )
+  ) +
+  theme_classic(base_size = 30)
 ```
 
-## Future directions
+## Pipeline outputs
+
+```{r}
+# Evokeds by participant and condition
+print(evokeds)
+```
+
+## Pipeline outputs
+
+```{r, eval=FALSE, out.width="50%", message=FALSE, warning=FALSE}
+# Evokeds by participant/condition
+evokeds %>%
+  filter(average_by == "n_b/DeviantPosRL") %>%
+  Rmisc::summarySEwithin(
+    measurevar = "N2",
+    withinvars = c("time", "n_b", "DeviantPosRL"),
+    idvar = "participant_id"
+  ) %>%
+  mutate(time = as.numeric(levels(time))[time]) %>%
+  ggplot(aes(
+    x = time,
+    y = N2,
+    ymin = N2 - se,
+    ymax = N2 + se,
+    color = n_b,
+    fill = n_b
+  )) +
+  facet_wrap(~DeviantPosRL) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_line(size = 1) +
+  geom_ribbon(color = NA, alpha = 0.2) +
+  coord_cartesian(xlim = c(-0.2, 0.8)) +
+  theme_classic(base_size = 20)
+```
+
+## Pipeline outputs
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=5}
+# Evokeds by participant/condition (core repeated for creating the plot)
+evokeds %>%
+  filter(average_by == "n_b/DeviantPosRL") %>%
+  Rmisc::summarySEwithin(
+    measurevar = "N2",
+    withinvars = c("time", "n_b", "DeviantPosRL"),
+    idvar = "participant_id"
+  ) %>%
+  mutate(time = as.numeric(levels(time))[time]) %>%
+  ggplot(aes(
+    x = time,
+    y = N2,
+    ymin = N2 - se,
+    ymax = N2 + se,
+    color = n_b,
+    fill = n_b
+  )) +
+  facet_wrap(~DeviantPosRL) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_line(size = 1) +
+  geom_ribbon(color = NA, alpha = 0.2) +
+  coord_cartesian(xlim = c(-0.2, 0.8)) +
+  theme_classic(base_size = 20)
+```
+
+## Pipeline outputs
+
+```{r}
+# List of pipeline options
+names(config)
+```
+
+```{r, results="hold"}
+# Number of rejected epochs per participant
+lengths(config$rejected_epochs)
+```
+
+## Cluster-based permutation tests
+
+```{r, eval=FALSE}
+# Permutation test options
+perm_contrasts <- list(
+  c("blurr", "normal"),
+  c("re", "li"),
+  c("blurr/re", "blurr/li"),
+  c("normal/re", "normal/li")
+)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Permutation test outputs
+clusters <- read_csv("output/clusters.csv") # or clusters <- res[[4]]
+print(na.omit(clusters))
+```
+
+## Automated tools
+
+- Reject bad epochs (`reject_peak_to_peak = 200`)
+
+  - Using per-channel peak-to-peak amplitudes
+
+- Ocular correction (`ocular_correction = "auto"`)
+
+  - FastICA [@hyvarinen1999] + correlation with HEOG/VEOG
+
+- Interpolate bad channels (`bad_channel = "auto"`)
+
+  - Based on per-channel standard error across all epochs
+
+```{r, echo=FALSE, fig.align="right", out.width="46%"}
+knitr::include_graphics(here("slides/figures/automate.png"))
+```
+
+## One more thing
+
+::: columns
+
+:::: column
+
+```{r, eval=FALSE}
+# Auto-match log files to triggers
+triggers_column = "trigger",
+```
+
+- Have such a column? Great!
+
+- If not, create in R and pass data frames as `log_files`
+
+::::
+
+:::: column
+
+```{r, echo=FALSE, fig.align="right", out.width="100%"}
+knitr::include_graphics(here("slides/figures/one_more_thing.jpeg"))
+```
+
+::::
+
+:::
+
+## Plans
 
 - Automated tests
 
