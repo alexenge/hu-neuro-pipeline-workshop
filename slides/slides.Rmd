@@ -15,11 +15,19 @@ output:
       in_header: "template/hu_template.tex"
 ---
 
+```{r, include=FALSE}
+# Create helper function to include figures only if the file exists
+include_if_exists <- function(path, ...) {
+  if (file.exists(here::here(path))) {
+    knitr::include_graphics(here::here(path), ...)
+  }
+}
+```
+
 ## Why Python?
 
 ```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
-library(here)
-knitr::include_graphics(here("slides/figures/venn.png"))
+include_if_exists("slides/figures/venn.png")
 ```
 
 
@@ -48,7 +56,7 @@ reticulate::py_install("hu-neuro-pipeline", pip = TRUE, python_version = "3.8")
 \bigskip
 
 ```{r, echo=FALSE, fig.align="right", out.width="15%"}
-knitr::include_graphics(here("slides/figures/reticulate.png"))
+include_if_exists("slides/figures/reticulate.png")
 ```
 
 ## General usage
@@ -344,7 +352,7 @@ print(na.omit(clusters))
   - Based on per-channel standard error across all epochs
 
 ```{r, echo=FALSE, fig.align="right", out.width="46%"}
-knitr::include_graphics(here("slides/figures/automate.png"))
+include_if_exists("slides/figures/automate.png")
 ```
 
 ## One more thing
@@ -367,7 +375,7 @@ triggers_column = "trigger",
 :::: column
 
 ```{r, echo=FALSE, fig.align="right", out.width="100%"}
-knitr::include_graphics(here("slides/figures/one_more_thing.jpeg"))
+include_if_exists("slides/figures/one_more_thing.jpeg")
 ```
 
 ::::
