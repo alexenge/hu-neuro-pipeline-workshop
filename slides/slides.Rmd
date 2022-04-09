@@ -2,7 +2,7 @@
 title:          "`hu-neuro-pipeline`"
 subtitle: |
   A Python implementation of the single trial EEG pipeline by Frömer et al.
-  (*Front. Neurosci.*, 2018)
+  [*Front. Neurosci.*, -@fromer2018]
 author:         "Alexander Enge"
 date:           "06/04/2022"
 institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
@@ -30,6 +30,45 @@ include_if_exists <- function(path, ...) {
 include_if_exists("slides/figures/venn.png")
 ```
 
+## Why MNE-Python?
+
+- Versatile
+
+  - EEG, MEG, ECoG, fNIRS
+
+  - Preprocessing, statistics, time-frequency analsis, visualization, machine learning, connectivity, source localization, ...
+
+- Open source
+
+  - 288 contributors on GitHub as of April 2022
+
+  - Funding: NIH, NSF, ERC, Google, Amazon, ...
+
+- Community standards
+
+  - Code review, automatic tests, user forum, office hours, ...
+
+## Why this pipeline?
+
+- User friendly, e.g.:
+
+  - No MATLAB license; can be called from within R
+
+  - Outputs readily usable for LMMs and plotting
+
+- New features, e.g.:
+
+  - Time-frequency analysis
+
+  - Automatic ocular correction (ICA) + bad channel detection
+
+- Code standards + versioning \tiny (https://github.com/alexenge/hu-neuro-pipeline/)
+
+\bigskip
+
+```{r, echo=FALSE, fig.align="right", message=FALSE, out.width="30%"}
+include_if_exists("slides/figures/github_pypi.png")
+```
 
 ## Installation
 
@@ -125,7 +164,7 @@ ocular_correction = "data/cali",
 
     - Path or list of BESA files (`.matrix`) or
 
-    - Name of an ICA method (default: `"fastica"`)
+    - `"auto"` for independent component analysis (ICA)
 
 - Default bandpass filter (0.1--40 Hz)
 
@@ -180,7 +219,7 @@ average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 
 - Threshold for artifact rejection (`reject_peak_to_peak`)
 
-\bigskip\tiny
+\tiny
 
 See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/inputs.md
 
@@ -202,6 +241,10 @@ trials <- read_csv("output/trials.csv")
 evokeds <- read_csv("output/ave.csv")
 config <- jsonlite::read_json("output/config.json")
 ```
+
+\tiny
+
+See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/outputs.md
 
 ## Pipeline outputs
 
@@ -323,9 +366,8 @@ lengths(config$rejected_epochs)
 
 ```{r, eval=FALSE}
 # Permutation test options
-perm_contrasts <- list(
+perm_contrasts = list(
   c("blurr", "normal"),
-  c("re", "li"),
   c("blurr/re", "blurr/li"),
   c("normal/re", "normal/li")
 )
@@ -349,7 +391,7 @@ print(na.omit(clusters))
 
 - Interpolate bad channels (`bad_channel = "auto"`)
 
-  - Based on per-channel standard error across all epochs
+  - Based on per-channel standard error across epochs
 
 ```{r, echo=FALSE, fig.align="right", out.width="46%"}
 include_if_exists("slides/figures/automate.png")
