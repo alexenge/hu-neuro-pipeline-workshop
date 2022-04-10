@@ -22,6 +22,11 @@ include_if_exists <- function(path, ...) {
     knitr::include_graphics(here::here(path), ...)
   }
 }
+
+# Change default color palette in ggplot to http://arxiv.org/abs/2107.02270
+cols <- c("#5790fc", "#e42536", "#964a8b", "#9c9ca1", "#7a21dd")
+scale_colour_discrete <- function(...) scale_colour_manual(..., values = cols)
+scale_fill_discrete <- function(...) scale_fill_manual(..., values = cols)
 ```
 
 ## Why Python?
@@ -48,7 +53,21 @@ include_if_exists("slides/figures/venn.png")
 
   - Code review, automatic tests, user forum, office hours, ...
 
-## Why this pipeline?
+## Why the @fromer2018 pipeline?
+
+- Allows single trial analysis of ERP amplitudes
+
+  - Treat items as random effects [@burki2018]
+
+  - Model trial and item level covariates
+
+  - Include continuous predictor variables
+
+  - Handle unbalanced designs via partial pooling
+
+  - Weaker assumptions than ANOVA
+
+## Why this re-implementation?
 
 - User friendly, e.g.:
 
@@ -68,6 +87,18 @@ include_if_exists("slides/figures/venn.png")
 
 ```{r, echo=FALSE, fig.align="right", message=FALSE, out.width="30%"}
 include_if_exists("slides/figures/github_pypi.png")
+```
+
+## And why not?
+
+- More difficult to debug or modify
+
+- Possibly not all features supported (e.g., RIDE)
+
+- EEGLAB still more widely use than MNE-Python
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
+include_if_exists("slides/figures/balance.jpg")
 ```
 
 ## Installation
@@ -257,8 +288,9 @@ print(trials)
 
 ```{r, results="hold", out.width="50%"}
 # Single trial N2 mean amplitudes
-summary(trials$N2)
-plot(density(trials$N2, na.rm = TRUE))
+ggplot(trials, aes(x = N2)) +
+  geom_density() +
+  theme_classic(base_size = 30)
 ```
 
 ## Pipeline outputs
@@ -274,8 +306,7 @@ summary(mod)
 
 ```{r, eval=TRUE, out.width="50%", message=FALSE, warning=FALSE}
 # Single trial N2 mean amplitudes by condition
-trials %>%
-  ggplot(aes(x = DeviantPosRL, y = N2, color = n_b, group = n_b)) +
+ggplot(trials, aes(x = DeviantPosRL, y = N2, color = n_b, group = n_b)) +
   geom_point(position = position_jitterdodge(0.3), alpha = 0.1) +
   stat_summary(
     geom = "line",
@@ -360,6 +391,13 @@ names(config)
 ```{r, results="hold"}
 # Number of rejected epochs per participant
 lengths(config$rejected_epochs)
+```
+
+## Automated QC reports
+
+```{r, eval=FALSE}
+# Input/output paths
+report_dir = "output/qc_reports",
 ```
 
 ## Cluster-based permutation tests
