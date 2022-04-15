@@ -14,10 +14,15 @@ ifeq ($(DOCKER), TRUE)
 	run := docker run --rm --volume $(PROJ_DIR):$(REMOTE_DIR) $(IMAGE_TAG)
 endif
 
-# Main target: Knit the slides
-all: slides/slides.pdf
+# Knit the slides
+slides: slides/slides.pdf
 slides/slides.pdf:
 	$(run) Rscript -e "rmarkdown::render(input = 'slides/slides.Rmd')"
+
+# Knit the exercises
+exercises: exercises/exercises.md
+exercises/exercises.md:
+	$(run) Rscript -e "rmarkdown::render(input = 'exercises/exercises.Rmd')"
 
 # Run an interactive RStudio session with Docker
 interactive:

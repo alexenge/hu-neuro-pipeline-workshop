@@ -1,0 +1,180 @@
+---
+title:          "`hu-neuro-pipeline`"
+subtitle:       "Workshop exercises"
+author:         "Alexander Enge"
+date:           "13/04/2022"
+institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
+output:
+  github_document:
+    toc: true
+    toc_depth: 3
+---
+
+## Exercises
+
+### 1. Try some Python
+
+The `hu-neuro-pipeline` package requires no Python skills and can be used in its full functionality from within R.
+If you would still like to try out running some Python code, this section is for you.
+If you want to move straight on how to use the pipelne, please move on to Section 2.
+
+#### Exercise 1.1
+
+Use the `print` function to show the string *Hello world*.
+Just as in R, Python strings need to go inside quotation marks.
+
+```{python, eval=FALSE}
+print(...)
+```
+
+#### Exercise 1.2
+
+Let's use a Python package called `pandas` to read some tabular data.
+You can find the behavioral log files from two EEG sessions in the `data/log/` sub-directory.
+Load one of them using the `read_csv` function from `pandas` and print the result.
+Note that Python always uses `=` rather than `<-` for assigning variables.
+
+```{python, eval=FALSE}
+import pandas
+
+log = pandas.read_csv(...)
+print(...)
+```
+
+#### Exercise 1.3
+
+Next, let's use MNE-Python to process some EEG data.
+Checkout the documentation of the package (https://mne.tools) to find a function for reading raw EEG data in BrainVision format.
+Then we use the `plot()` method of the `raw` data object to display a random segment of 10 seconds.
+
+```{python, eval=FALSE}
+import ...
+
+raw <- ... # Use `preload=True` so that the data are actually loaded
+raw.plot(duration=10.0, start=420.0)
+```
+
+#### Exercise 1.4
+
+That looks pretty ugly!
+Let's apply some filters to clean the data.
+Similar to the `plot()` method that we've used above, there is also a method that filters the raw data and can be applied in the same way.
+Try to find it in the documentation or try to guess its name and input arguments.
+A band-pass filter with a lower edge of 0.1 Hz and an upper edge of 40 Hz should do the trick.
+Then we again plot the data so the effect of the filter.
+
+```{python, eval=FALSE}
+...
+raw.plot(duration=10.0, start=420.0)
+```
+
+### 2. Try the pipeline
+
+In this section, you can try out calling the `hu-neuro-pipeline` package from R.
+
+#### Exercise 2.1
+
+Fill in this skeleton for using the `group_pipeline()` function to analyze the UCAP data.
+You need to specify the directories where the raw EEG data and log files are stored.
+The output directory and EEG trigger values are already provided for you, but you will need to select an ERP component of interest.
+Let's call this component `"P1"` and use a time window of 100--150 ms with a region of interest including channels PO3, PO4, POz, O1, O2, and Oz.
+The additional `average_by` argument specifies which columns from the log files are used to create by-participant averages for plotting.
+
+```{r, eval=FALSE}
+pipeline <- reticulate::import("pipeline")
+
+res <- pipeline$group_pipeline(
+  vhdr_files = ...,
+  log_files = ...,
+  output_dir = "output",
+  triggers = c(201:208, 211:218),
+  components = list(
+    "name" = c(...),
+    "tmin" = c(...),
+    "tmax" = c(...),
+    "roi" = list(c(...))
+  ),
+  average_by = c("n_b", "n_b/DeviantPosRL")
+)
+```
+
+#### Exercise 2.2
+
+Take a look at each of the files that were created in the output directory.
+Load the single trial data frame and plot the P1 amplitudes (on the y axis) as a function of the blurr vs. normal condition (on the x axis).
+
+```{r, eval=FALSE}
+trials <- readr::read_csv(...)
+ggplot(trials, aes(x = ..., y = ...)) +
+  geom_dot(position = "jitterdodge")
+```
+
+## Solutions
+
+### 1. Try some Python
+
+#### Exercise 1.1
+
+```{python, eval=TRUE}
+print("Hello world")
+```
+
+#### Exercise 1.2
+
+```{python, eval=TRUE}
+import pandas
+
+log = pandas.read_csv("data/log/09_test.txt")
+print(log)
+```
+
+#### Exercise 1.3
+
+```{python, eval=TRUE}
+import mne
+
+raw = mne.io.read_raw_brainvision("data/raw/09.vhdr", preload=True)
+raw.plot(duration=10.0, start=420.0)
+```
+
+#### Exercise 1.4
+
+```{python, eval=TRUE}
+raw.filter(0.1, 40.0)
+raw.plot(duration=10.0, start=420.0)
+```
+
+### 2. Try the pipeline
+
+#### Exercise 2.1
+
+```{r, eval=FALSE}
+library(reticulate)
+
+pipeline <- import("pipeline")
+
+res <- pipeline$group_pipeline(
+  vhdr_files = "data/raw",
+  log_files = "data/log",
+  output_dir = "output",
+  triggers = c(201:208, 211:218),
+  components = list(
+    "name" = c("P1"),
+    "tmin" = c(0.1),
+    "tmax" = c(0.15),
+    "roi" = list(c("PO3", "PO4", "POz", "O1", "O2", "Oz"))
+  ),
+  average_by = c("n_b", "n_b/DeviantPosRL")
+)
+```
+
+#### Exercise 2.2
+
+```{r, eval=TRUE}
+library(readr)
+library(ggplot2)
+
+trials <- read_csv("output/trials.csv")
+ggplot(trials, aes(x = n_b, y = P1)) +
+  geom_point(position = "jitter")
+```

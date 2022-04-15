@@ -1,5 +1,6 @@
 FROM alexenge/r_eeg:4.1.2
 
+COPY exercises / exercises/
 COPY slides/ slides/
 
 ENV PIPELINE_DATA_DIR="$HOME/proj/data"
