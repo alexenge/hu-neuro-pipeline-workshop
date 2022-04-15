@@ -6,22 +6,22 @@
 
 Hands-on workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package
 
-## 1. Usage
+## Usage
 
-### 1.1 Static version
+### Static version
 
 - Check out the [R Markdown version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides/slides.Rmd) or [PDF version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides/slides.pdf) of the slides
 
-### 1.2 Interactive version
-
-#### 1.2.1 Cloud-based
+### Interactive version, cloud-based
   
 - Hit the "launch binder" button at the top
 
-#### 1.2.2 Local machine
-  
-1. Follow the [installation instructions](https://github.com/alexenge/hu-neuro-pipeline#1-installation)
+### Interactive version, local machine
 
-2. [Download](https://github.com/alexenge/hu-neuro-pipeline-workshop/archive/refs/heads/main.zip) or `git clone` the workshop repository
+1. Have [R](https://ftp.fau.de/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download/) installed 
 
-3. Optionally copy your own EEG data into the `data/` sub-directory
+2. Follow the [installation instructions](https://github.com/alexenge/hu-neuro-pipeline#1-installation) for the pipeline
+
+3. [Download](https://github.com/alexenge/hu-neuro-pipeline-workshop/archive/refs/heads/main.zip) or `git clone` the workshop repository
+
+4. Optionally copy your own EEG data into a sub-directory called `data/`
