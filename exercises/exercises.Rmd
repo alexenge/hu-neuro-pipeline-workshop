@@ -16,7 +16,7 @@ output:
 
 The `hu-neuro-pipeline` package requires no Python skills and can be used in its full functionality from within R.
 If you would still like to try out running some Python code, this section is for you.
-If you want to move straight on how to use the pipelne, please move on to Section 2.
+If you want to move straight on how to use the pipeline, please move on to Section 2.
 
 #### Exercise 1.1
 
@@ -89,10 +89,10 @@ res <- pipeline$group_pipeline(
   output_dir = "output",
   triggers = c(201:208, 211:218),
   components = list(
-    "name" = c(...),
-    "tmin" = c(...),
-    "tmax" = c(...),
-    "roi" = list(c(...))
+    "name" = list(...),
+    "tmin" = list(...),
+    "tmax" = list(...),
+    "roi" = list(...)
   ),
   average_by = c("n_b", "n_b/DeviantPosRL")
 )
@@ -124,7 +124,7 @@ print("Hello world")
 ```{python, eval=TRUE}
 import pandas
 
-log = pandas.read_csv("data/log/09_test.txt")
+log = pandas.read_csv("data/log/5_test.txt")
 print(log)
 ```
 
@@ -133,7 +133,7 @@ print(log)
 ```{python, eval=TRUE}
 import mne
 
-raw = mne.io.read_raw_brainvision("data/raw/09.vhdr", preload=True)
+raw = mne.io.read_raw_brainvision("data/raw/05.vhdr", preload=True)
 raw.plot(duration=10.0, start=420.0)
 ```
 
@@ -159,9 +159,9 @@ res <- pipeline$group_pipeline(
   output_dir = "output",
   triggers = c(201:208, 211:218),
   components = list(
-    "name" = c("P1"),
-    "tmin" = c(0.1),
-    "tmax" = c(0.15),
+    "name" = list("P1"),
+    "tmin" = list(0.1),
+    "tmax" = list(0.15),
     "roi" = list(c("PO3", "PO4", "POz", "O1", "O2", "Oz"))
   ),
   average_by = c("n_b", "n_b/DeviantPosRL")
