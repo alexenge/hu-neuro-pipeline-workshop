@@ -4,7 +4,7 @@ subtitle: |
   A Python implementation of the single trial EEG pipeline by Frömer et al.
   [*Front. Neurosci.*, -@fromer2018]
 author:         "Alexander Enge"
-date:           "06/04/2022"
+date:           "20/04/2022"
 institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
 classoption:    "t"
 bibliography:   "references.bib"
@@ -23,10 +23,9 @@ include_if_exists <- function(path, ...) {
   }
 }
 
-# Change default color palette in ggplot to http://arxiv.org/abs/2107.02270
-cols <- c("#5790fc", "#e42536", "#964a8b", "#9c9ca1", "#7a21dd")
-scale_colour_discrete <- function(...) scale_colour_manual(..., values = cols)
-scale_fill_discrete <- function(...) scale_fill_manual(..., values = cols)
+# Change default color palette in ggplot
+scale_colour_discrete <- function(...) scale_color_brewer(..., palette = "Set1")
+scale_fill_discrete <- function(...) scale_fill_brewer(..., palette = "Set1")
 ```
 
 ## Why Python?
@@ -73,7 +72,7 @@ include_if_exists("slides/figures/venn.png")
 
   - No MATLAB license; can be called from within R
 
-  - Outputs readily usable for LMMs and plotting
+  - Outputs readily usable for mixed models and plotting
 
 - New features, e.g.:
 
@@ -156,16 +155,16 @@ res <- pipeline$group_pipeline(
   # Epoching options
   triggers = c(201:208, 211:218),
   components = list(
-    "name" = c("N2", "P3b"),
-    "tmin" = c(0.25, 0.4),
-    "tmax" = c(0.35, 0.55),
+    "name" = list("N2", "P3b"),
+    "tmin" = list(0.25, 0.4),
+    "tmax" = list(0.35, 0.55),
     "roi" = list(
       c("FC1", "FC2", "C1", "C2", "Cz"),
       c("CP3", "CP1", "CPz", "CP2", "CP4", "P3", "Pz", "P4", "PO3", "POz", "PO4")
     )
   ),
   # Averaging options
-  average_by = c("n_b", "n_b/DeviantPosRL")
+  average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL"),
 )
 ```
 
@@ -205,9 +204,9 @@ ocular_correction = "data/cali",
 # Epoching options
 triggers = c(201:208, 211:218),
 components = list(
-  "name" = c("N2", "P3b"),
-  "tmin" = c(0.25, 0.4),
-  "tmax" = c(0.35, 0.55),
+  "name" = list("N2", "P3b"),
+  "tmin" = list(0.25, 0.4),
+  "tmax" = list(0.35, 0.55),
   "roi" = list(
     c("FC1", "FC2", "C1", "C2", "Cz"),
     c("CP3", "CP1", "CPz", "CP2", "CP4", "P3", "Pz", "P4", "PO3", "POz", "PO4")
@@ -464,21 +463,25 @@ include_if_exists("slides/figures/one_more_thing.jpeg")
 
 ## Plans
 
-- Automated tests
+- Improve documentation + tests
 
-- Better HTML reports
+- More detailed QC reports
 
 - Mixed models with `pymer4` (?)
 
-- New flavors of permutation tests:
-
-    - Cluster test on ANOVAs or mixed models [@frossard2021]
-
-    - Cluster depth test [@frossard2022]
+- Better permutation tests [@frossard2021; @frossard2022]
 
 - BIDS interface
 
-- Command line interface + Docker app
+- Your ideas + contributions?
+
+## Thanks
+
+\vspace{1cm}
+
+```{r, echo=FALSE, fig.align="center", out.width="50%"}
+include_if_exists("slides/figures/xkcd.png")
+```
 
 ## References
 

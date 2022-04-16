@@ -1,5 +1,4 @@
 *.log
-*.pdf
 *.pxd
 *.tex
 .DS_Store
