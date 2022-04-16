@@ -1,0 +1,50 @@
+% -----------------------------------------------------------------------
+% === HU BERLIN BEAMER TEMPLATE ===
+% -----------------------------------------------------------------------
+% Put this in the YML header of your R Markdown script:
+%
+% output:
+%   beamer_presentation:
+%     includes:
+%       in_header: "template/hu_template.tex"
+%
+% Make sure that this template is placed in the `template` sub-directory 
+% of your project, together with the hu_logo.pdf and and apa.csl files.
+% -----------------------------------------------------------------------
+
+% Main color
+\definecolor{hu_blue}{rgb}{0, 0.22, 0.42}
+\usecolortheme[named=hu_blue]{structure}
+
+% Title page
+\addtobeamertemplate{title page}{}{\vspace{-1cm}}
+
+% Content page header with logo
+\setbeamertemplate{frametitle}{\insertframetitle\vspace{0.6cm}}
+\setbeamertemplate{headline}{
+    \hfill
+    \includegraphics[width=2.5cm]{template/hu_logo}
+    \vspace{-1.5cm}}
+
+% Content page footer
+\setbeamertemplate{footline}{
+    \hfill\#\insertframenumber\hspace{0.5cm}\vspace{0.5cm}}
+\setbeamerfont{footline}{size=\fontsize{10}{11}\selectfont}
+
+% Content page margins
+\setbeamersize{text margin left=1cm,text margin right=1cm}
+
+% Use circles for bullet points
+\setbeamertemplate{items}[circle]
+
+% Code chunks and output size
+\makeatletter
+\@ifundefined{Shaded}{}{
+    \let\oldShaded\Shaded
+    \let\endoldShaded\endShaded
+    \renewenvironment{Shaded}{
+        \topsep=5pt\partopsep=5pt\tiny\oldShaded}{\endoldShaded}}
+\makeatother
+\let\oldverbatim\verbatim
+\let\endoldverbatim\endverbatim
+\renewenvironment{verbatim}{\tiny\oldverbatim}{\endoldverbatim}

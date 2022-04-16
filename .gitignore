@@ -1,6 +1,5 @@
 *.log
 *.pxd
-*.tex
 .DS_Store
 /data/
 /output/
