@@ -2,7 +2,7 @@ FROM alexenge/r_eeg:4.1.2
 
 USER root
 
-COPY exercises / exercises/
+COPY exercises/ exercises/
 COPY slides/ slides/
 
 ENV PIPELINE_DATA_DIR=$HOME/project/data
