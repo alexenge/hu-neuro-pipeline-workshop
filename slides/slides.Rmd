@@ -40,7 +40,7 @@ include_if_exists("slides/figures/venn.png")
 
   - EEG, MEG, ECoG, fNIRS
 
-  - Preprocessing, statistics, time-frequency analsis, visualization, machine learning, connectivity, source localization, ...
+  - Preprocessing, statistics, time-frequency analysis, visualization, machine learning, connectivity, source localization, ...
 
 - Open source
 
@@ -231,7 +231,7 @@ components = list(
 average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 ```
 
-- List of column names (for main effects) and combinations of column names (for interaction effects, seperated by `"/"`)
+- List of column names (for main effects) and combinations of column names (for interaction effects, separated by `"/"`)
 
 ## More Pipeline inputs
 
