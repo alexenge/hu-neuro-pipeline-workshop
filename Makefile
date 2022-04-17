@@ -15,14 +15,9 @@ ifeq ($(DOCKER), TRUE)
 endif
 
 # Knit the slides
-slides: slides/slides.pdf
+all: slides/slides.pdf
 slides/slides.pdf:
 	$(run) Rscript -e "rmarkdown::render(input = 'slides/slides.Rmd')"
-
-# Knit the exercises
-exercises: exercises/exercises.md
-exercises/exercises.md:
-	$(run) Rscript -e "rmarkdown::render(input = 'exercises/exercises.Rmd')"
 
 # Run an interactive RStudio session with Docker
 interactive:
