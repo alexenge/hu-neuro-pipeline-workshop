@@ -164,7 +164,7 @@ res <- pipeline$group_pipeline(
     )
   ),
   # Averaging options
-  average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL"),
+  average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 )
 ```
 
