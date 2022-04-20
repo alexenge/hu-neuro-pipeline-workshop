@@ -2,9 +2,6 @@ name: build_push_docker
 
 on:
   push:
-    paths:
-      - "Dockerfile"
-      - ".github/workflows/*"
   workflow_dispatch:
 
 jobs:
