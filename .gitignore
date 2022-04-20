@@ -1,7 +1,7 @@
+*.html
 *.log
 *.pxd
 .DS_Store
 /data/
-/output/
 /slides/figures/
 /slides/slides_*/

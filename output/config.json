@@ -1,0 +1,246 @@
+{
+    "vhdr_files": [
+        "data/raw/09.vhdr",
+        "data/raw/47.vhdr"
+    ],
+    "log_files": [
+        "data/log/09_test.txt",
+        "data/log/47_test.txt"
+    ],
+    "output_dir": "output",
+    "clean_dir": null,
+    "epochs_dir": null,
+    "report_dir": null,
+    "to_df": true,
+    "downsample_sfreq": null,
+    "veog_channels": "auto",
+    "heog_channels": "auto",
+    "montage": "easycap-M1",
+    "bad_channels": [
+        null,
+        null
+    ],
+    "ocular_correction": [
+        "data/cali/09_cali.matrix",
+        "data/cali/47_cali.matrix"
+    ],
+    "highpass_freq": 0.1,
+    "lowpass_freq": 40.0,
+    "triggers": [
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218
+    ],
+    "triggers_column": null,
+    "epochs_tmin": -0.5,
+    "epochs_tmax": 1.5,
+    "baseline_tmin": -0.2,
+    "baseline_tmax": 0.0,
+    "skip_log_rows": [
+        null,
+        null
+    ],
+    "skip_log_conditions": null,
+    "reject_peak_to_peak": 200.0,
+    "components": {
+        "name": [
+            "N2",
+            "P3b"
+        ],
+        "tmin": [
+            0.25,
+            0.4
+        ],
+        "tmax": [
+            0.35,
+            0.55
+        ],
+        "roi": [
+            [
+                "FC1",
+                "FC2",
+                "C1",
+                "C2",
+                "Cz"
+            ],
+            [
+                "CP3",
+                "CP1",
+                "CPz",
+                "CP2",
+                "CP4",
+                "P3",
+                "Pz",
+                "P4",
+                "PO3",
+                "POz",
+                "PO4"
+            ]
+        ]
+    },
+    "average_by": [
+        "n_b",
+        "DeviantPosRL",
+        "n_b/DeviantPosRL"
+    ],
+    "perform_tfr": false,
+    "tfr_subtract_evoked": false,
+    "tfr_freqs": [
+        5.0,
+        7.0,
+        9.0,
+        11.0,
+        13.0,
+        15.0,
+        17.0,
+        19.0,
+        21.0,
+        23.0,
+        25.0,
+        27.0,
+        29.0,
+        31.0,
+        33.0,
+        35.0
+    ],
+    "tfr_cycles": [
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0,
+        6.5,
+        7.0,
+        7.5,
+        8.0,
+        8.5,
+        9.0,
+        9.5,
+        10.0
+    ],
+    "tfr_baseline_tmin": -0.3,
+    "tfr_baseline_tmax": -0.1,
+    "tfr_components": {
+        "name": [],
+        "tmin": [],
+        "tmax": [],
+        "fmin": [],
+        "fmax": [],
+        "roi": []
+    },
+    "perm_contrasts": [
+        [
+            "blurr",
+            "normal"
+        ],
+        [
+            "blurr/re",
+            "blurr/li"
+        ],
+        [
+            "normal/re",
+            "normal/li"
+        ]
+    ],
+    "perm_tmin": 0.0,
+    "perm_tmax": 1.0,
+    "perm_channels": null,
+    "perm_fmin": null,
+    "perm_fmax": null,
+    "n_jobs": 1,
+    "rejected_epochs": {
+        "09": [
+            85,
+            86,
+            117,
+            118,
+            181,
+            182,
+            340,
+            359,
+            711,
+            758,
+            897,
+            1210,
+            1256,
+            1345,
+            1397,
+            1408,
+            1428,
+            1469,
+            1536,
+            1545,
+            1546,
+            1547,
+            1548,
+            1549,
+            1550,
+            1551,
+            1552,
+            1569,
+            1570,
+            1571,
+            1582,
+            1591,
+            1594,
+            1595,
+            1596,
+            1597,
+            1598,
+            1613,
+            1633,
+            1634,
+            1635,
+            1650,
+            1651,
+            1658,
+            1665,
+            1672,
+            1673,
+            1675,
+            1676,
+            1677,
+            1702,
+            1712,
+            1729,
+            1731,
+            1732,
+            1738,
+            1754,
+            1764,
+            1771,
+            1791,
+            1797,
+            1811,
+            1866,
+            1886,
+            1889,
+            1891
+        ],
+        "47": [
+            445,
+            568,
+            569,
+            725,
+            726,
+            1343,
+            1727
+        ]
+    }
+}
