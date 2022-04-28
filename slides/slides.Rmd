@@ -15,6 +15,8 @@ output:
       in_header: "template/hu_template.tex"
 ---
 
+## Why Python?
+
 <!-- When trying to knit the slides, make sure that the project directory is selected as the knitting directory.
 You can change this in RStudio via the small arrow next to the "Knit" button -> "Knit Directory" -> "Project Directory".
 You can also use the command `make` from the terminal. -->
@@ -31,8 +33,6 @@ include_if_exists <- function(path, ...) {
 scale_colour_discrete <- function(...) scale_color_brewer(..., palette = "Set1")
 scale_fill_discrete <- function(...) scale_fill_brewer(..., palette = "Set1")
 ```
-
-## Why Python?
 
 ```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
 include_if_exists("slides/figures/venn.png")
