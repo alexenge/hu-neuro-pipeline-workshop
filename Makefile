@@ -17,7 +17,7 @@ endif
 # Knit the slides
 all: slides/slides.pdf
 slides/slides.pdf:
-	$(run) Rscript -e "rmarkdown::render(input = 'slides/slides.Rmd')"
+	$(run) Rscript -e "rmarkdown::render(input = 'slides.Rmd')"
 
 # Run an interactive RStudio session with Docker
 interactive:

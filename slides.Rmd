@@ -7,19 +7,15 @@ author:         "Alexander Enge"
 date:           "20/04/2022"
 institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
 classoption:    "t"
-bibliography:   "references.bib"
-csl:            "template/apa.csl"
+bibliography:   "misc/references.bib"
+csl:            "misc/template/apa.csl"
 output:
   beamer_presentation:
     includes:
-      in_header: "template/hu_template.tex"
+      in_header: "misc/template/hu_template.tex"
 ---
 
 ## Why Python?
-
-<!-- When trying to knit the slides, make sure that the project directory is selected as the knitting directory.
-You can change this in RStudio via the small arrow next to the "Knit" button -> "Knit Directory" -> "Project Directory".
-You can also use the command `make` from the terminal. -->
 
 ```{r, include=FALSE}
 # Create helper function to include figures only if the file exists
