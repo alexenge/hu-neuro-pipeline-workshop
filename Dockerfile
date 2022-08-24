@@ -2,11 +2,13 @@ FROM alexenge/r_eeg:4.2.1
 
 USER root
 
-COPY slides/ slides/
+COPY misc/ misc/
 COPY .gitignore .
 COPY LICENSE .
 COPY Makefile .
 COPY README.md .
+COPY slides.Rmd .
+COPY slides.pdf .
 
 ENV PIPELINE_DATA_DIR=$HOME/project/data
 RUN python3 -c "from pipeline.datasets import ucap; ucap.get_paths(2)" \
