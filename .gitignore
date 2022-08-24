@@ -3,5 +3,5 @@
 *.pxd
 .DS_Store
 /data/
-/slides/figures/
+/slides/figures*/
 /slides/slides_*/
