@@ -2,7 +2,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alexenge/hu-neuro-pipeline-workshop.git/HEAD?urlpath=rstudio)
 [![Made with R Markdown](https://img.shields.io/badge/Made%20with-R%20Markdown-blue)](https://rmarkdown.rstudio.com/)
-![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/workflow/status/alexenge/hu-neuro-pipeline-workshop/build_push_docker)
+![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/actions/workflow/status/alexenge/hu-neuro-pipeline-workshop/main.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 Hands-on workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package
