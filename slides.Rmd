@@ -1,8 +1,8 @@
 ---
 title: "`hu-neuro-pipeline`"
 subtitle: |
-  A Python implementation of the single trial EEG pipeline by Frömer et al.
-  [*Front. Neurosci.*, -@fromer2018]
+  A Python-based and R-compatible pipeline \
+  for processing single trial EEG data
 author: "Alexander Enge"
 institute: "Neuro Lab @ Humboldt-Universität zu Berlin"
 date: 2023-01-11
