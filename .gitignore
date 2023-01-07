@@ -4,4 +4,7 @@
 .DS_Store
 /data/
 /figures/*
+!/figures/flowchart.png
 !/figures/love.png
+!/figures/morlet.png
+!/figures/tfr.png
