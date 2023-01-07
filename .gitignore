@@ -3,5 +3,5 @@
 *.pxd
 .DS_Store
 /data/
-/slides/figures*/
-/slides/slides_*/
+/figures/*
+!/figures/love.png

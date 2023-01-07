@@ -5,24 +5,37 @@
 ![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/actions/workflow/status/alexenge/hu-neuro-pipeline-workshop/main.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-Hands-on workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package
+Hands-on workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package for single trial EEG processing
+
+<img src="https://raw.githubusercontent.com/alexenge/hu-neuro-pipeline-workshop/main/figures/love.png" width="500">
 
 ## Usage
 
 ### Static version
 
-- Check out the [R Markdown version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides/slides.Rmd) or [PDF version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides/slides.pdf) of the slides
+- Check out the [R Markdown version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.Rmd) or [PDF version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.pdf) of the slides
 
 ### Interactive version, cloud-based
   
-- Hit the "launch binder" button at the top
+- Hit [this link](https://mybinder.org/v2/gh/alexenge/hu-neuro-pipeline-workshop.git/HEAD?urlpath=rstudio) or the "launch binder" button
+
+- Run the "Minimal example" in the [`slides.Rmd`](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.Rmd) file to see the pipeline in action
 
 ### Interactive version, local machine
 
-1. Have [R](https://ftp.fau.de/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download/) installed 
+1. If necessary, install [R](https://ftp.fau.de/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download/)
 
 2. Follow the [installation instructions](https://github.com/alexenge/hu-neuro-pipeline#1-installation) for the pipeline
 
-3. [Download](https://github.com/alexenge/hu-neuro-pipeline-workshop/archive/refs/heads/main.zip) or `git clone` the workshop repository
+3. [Download](https://github.com/alexenge/hu-neuro-pipeline-workshop/archive/refs/heads/main.zip) and un-zip or `git clone` the workshop repository
 
-4. Optionally copy your own EEG data into a sub-directory called `data/`
+4. Run the "Minimal example" in the [`slides.Rmd`](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.Rmd) file to see the pipeline in action
+
+    - Using your own data: Change the input file paths (`vhdr_files`, `log_files`, and `besa_files`) to match the location of your data
+
+    - Using demo data from the lab: Download two participants from the UCAP dataset ([Frömer et al., *Front. Neurosci.*, 2018](https://doi.org/10.3389/fnins.2018.00048)) by running the following piece of R code
+
+```r
+pipeline <- import("pipeline")
+pipeline$datasets$ucap$get_paths(n_participants = 2)
+```
