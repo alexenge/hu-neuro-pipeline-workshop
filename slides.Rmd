@@ -1,40 +1,64 @@
 ---
-title:          "`hu-neuro-pipeline`"
+title: "`hu-neuro-pipeline`"
 subtitle: |
   A Python implementation of the single trial EEG pipeline by Frömer et al.
   [*Front. Neurosci.*, -@fromer2018]
-author:         "Alexander Enge"
-date:           "20/04/2022"
-institute:      "Neuro Lab @ Humboldt-Universität zu Berlin"
-classoption:    "t"
-bibliography:   "misc/references.bib"
-csl:            "misc/template/apa.csl"
+author: "Alexander Enge"
+institute: "Neuro Lab @ Humboldt-Universität zu Berlin"
+date: 2023-01-11
+classoption: "t"
+bibliography: "misc/references.bib"
+csl: "misc/template/apa.csl"
 output:
   beamer_presentation:
     includes:
       in_header: "misc/template/hu_template.tex"
 ---
 
-## Why Python?
+## The @fromer2018 pipeline
 
-```{r, include=FALSE}
-# Create helper function to include figures only if the file exists
-include_if_exists <- function(path, ...) {
-  if (file.exists(here::here(path))) {
-    knitr::include_graphics(here::here(path), ...)
-  }
-}
-
-# Change default color palette in ggplot
+```{r, echo=FALSE, message=FALSE, fig.align="center", out.width="100%"}
 scale_colour_discrete <- function(...) scale_color_brewer(..., palette = "Set1")
 scale_fill_discrete <- function(...) scale_fill_brewer(..., palette = "Set1")
+
+figure <- function(path, ...) {
+  require(here)
+  if (file.exists(here(path))) knitr::include_graphics(here(path), ...)
+}
+
+figure("figures/fromer.png")
 ```
 
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
-include_if_exists("slides/figures/venn.png")
+## The @fromer2018 pipeline
+
+- Allows single trial analysis of ERP amplitudes
+
+  - Random effects for items [@burki2018]
+
+  - Trial and item level covariates [@volpert-esmond2021]
+
+  - Continuous predictor variables
+
+  - Unbalanced designs
+
+## Python implementation
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/love.png")
 ```
 
-## Why MNE-Python?
+## Python, I choose you!
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="50%"}
+figure("figures/pokemon.jpg")
+```
+
+\tiny
+
+**Blog post**: https://dominiquemakowski.github.io/post/2020-05-22-r_or_python \
+**Online course**: https://swcarpentry.github.io/python-novice-inflammation
+
+## MNE-Python
 
 - Versatile
 
@@ -44,60 +68,46 @@ include_if_exists("slides/figures/venn.png")
 
 - Open source
 
-  - 288 contributors on GitHub as of April 2022
+  - 329 contributors on GitHub (January 2023)
 
-  - Funding: NIH, NSF, ERC, Google, Amazon, ...
+  - Funded by NIH, NSF, ERC, Google, Amazon, ...
 
-- Community standards
+  - Code review, automated tests, user forum, office hours, ...
 
-  - Code review, automatic tests, user forum, office hours, ...
+\bigskip
 
-## Why the @fromer2018 pipeline?
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="20%"}
+figure("figures/mne.png")
+```
 
-- Allows single trial analysis of ERP amplitudes
+## Python implementation
 
-  - Treat items as random effects [@burki2018]
+- No MATLAB required
 
-  - Model trial and item level covariates
+- No Python skills required -- can be called from R
 
-  - Include continuous predictor variables
-
-  - Handle unbalanced designs via partial pooling
-
-  - Weaker assumptions than ANOVA
-
-## Why this re-implementation?
-
-- User friendly, e.g.:
-
-  - No MATLAB license; can be called from within R
-
-  - Outputs readily usable for mixed models and plotting
-
-- New features, e.g.:
+- New features:
 
   - Time-frequency analysis
 
-  - Automatic ocular correction (ICA) + bad channel detection
+  - Fully automatic ocular correction (ICA)
 
-- Code standards + versioning \tiny (https://github.com/alexenge/hu-neuro-pipeline/)
+  - Automatic bad channel detection
+
+  - Automatic missing trial detection
+
+- Code standards + version control \tiny (https://github.com/alexenge/hu-neuro-pipeline/)
 
 \bigskip
 
 ```{r, echo=FALSE, fig.align="right", message=FALSE, out.width="30%"}
-include_if_exists("slides/figures/github_pypi.png")
+figure("slides/figures/github_pypi.png")
 ```
 
-## And why not?
+## Python implementation
 
-- More difficult to debug or modify
-
-- Possibly not all features supported (e.g., RIDE)
-
-- EEGLAB still more widely use than MNE-Python
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
-include_if_exists("slides/figures/balance.jpg")
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="45%"}
+figure("figures/flowchart.png")
 ```
 
 ## Installation
@@ -115,17 +125,17 @@ For R users:
 # Install reticulate for interfacing with Python from R
 install.packages("reticulate")
 
-# Install the Miniconda Python distribution
+# Install Python (Miniconda distribution)
 reticulate::install_miniconda()
 
-# Install the actual package
+# Install the actual package from PyPI
 reticulate::py_install("hu-neuro-pipeline", pip = TRUE, python_version = "3.8")
 ```
 
 \bigskip
 
 ```{r, echo=FALSE, fig.align="right", out.width="15%"}
-include_if_exists("slides/figures/reticulate.png")
+figure("figures/reticulate.png")
 ```
 
 ## General usage
@@ -138,7 +148,7 @@ pipeline <- reticulate::import("pipeline")
 res <- pipeline$group_pipeline(...)
 ```
 
-## A simple example
+## Minimal example
 
 ```{r, eval=FALSE}
 # Import the Python package
@@ -168,6 +178,12 @@ res <- pipeline$group_pipeline(
 )
 ```
 
+## Minimal example
+
+```{r, echo=FALSE, fig.align="center", out.width="70%"}
+figure("figures/ucap.png")
+```
+
 ## Pipeline inputs
 
 ```{r, eval=FALSE}
@@ -190,9 +206,7 @@ output_dir = "output",
 besa_files = "data/cali",
 ```
 
-- Ocular correction with BESA: Directory path or list of BESA files (`.matrix`)
-
-- Alternatively: independent component analysis (e.g., `tfr_method = "fastica"`)
+- Directory path or list of BESA files (`.matrix`)
 
 - Default bandpass filter (0.1--40 Hz)
 
@@ -231,7 +245,7 @@ average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 
 - List of column names (for main effects) and combinations of column names (for interaction effects, separated by `"/"`)
 
-## More Pipeline inputs
+## More pipeline inputs
 
 - Downsampling (`downsample_sfreq`)
 
@@ -246,6 +260,8 @@ average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 - Skip log file rows (`skip_log_rows`, `skip_log_conditions`)
 
 - Threshold for artifact rejection (`reject_peak_to_peak`)
+
+- ...
 
 \tiny
 
@@ -390,17 +406,18 @@ names(config)
 lengths(config$auto_rejected_epochs)
 ```
 
-## Automated QC reports
+## More pipeline outputs
 
-```{r, eval=FALSE}
-# Input/output paths
-report_dir = "output/qc_reports",
-```
+- Cleaned continuous data (`clean_dir`)
+
+- Epoched data (`epochs_dir`)
+
+- Automated QC reports (`reports_dir`)
 
 ## Cluster-based permutation tests
 
 ```{r, eval=FALSE}
-# Permutation test options
+# Permutation test input
 perm_contrasts = list(
   c("blurr", "normal"),
   c("blurr/re", "blurr/li"),
@@ -414,58 +431,105 @@ clusters <- read_csv("output/clusters.csv") # or clusters <- res[[4]]
 print(na.omit(clusters))
 ```
 
-## Automated tools
+## Artifact correction
 
-- Reject bad epochs (`reject_peak_to_peak = 200.0`)
+- **Multiple source eye correction (MSEC)**
 
-  - Using per-channel peak-to-peak amplitudes
+  - Requires `.matrix` files from BESA
 
-- Ocular correction (`ica_method = "fastica"`)
+## Artifact correction
 
-  - FastICA [@hyvarinen1999] + correlation with HEOG/VEOG
+- **Independent component analysis (ICA)**
 
-  - Can specify different methods + number of principal components (via `ica_n_components`)
+  - Different algorithms available \
+  (e.g., `ica_method = "fastica"`)
+  
+  - Can specify initial number of principal components with `ica_n_components`
+  
+  - Automatic detection + exclusion of eye movement components based on correlation with HEOG and VEOG \tiny (see https://mne.tools/stable/generated/mne.preprocessing.ICA.html#mne.preprocessing.ICA.find_bads_eog) \normalsize
 
-- Interpolate bad channels (`bad_channel = "auto"`)
+  - Verify in QC reports
 
-  - Based on per-channel standard error across epochs
+  - Other selection methods (manual selection, [ICLabel](https://labeling.ucsd.edu/tutorial/about)) not yet implemented
 
-```{r, echo=FALSE, fig.align="right", out.width="46%"}
-include_if_exists("slides/figures/automate.png")
+## Artifact rejection
+
+- Per-channel peak-to-peak amplitude threshold via `reject_peak_to_peak` (default: `200.0`)
+  
+- In addition to or instead of BESA or ICA
+
+## Repairing bad channels
+
+- Pass participant-specific vectors of bad channel labels
+
+  - E.g., `bad_channels = list("05" = c("C3", "P7"), ...)`
+
+- Uses spherical spline interpolation
+
+- Experimental: Automatic bad channel detection (`bad_channels = "auto"`)
+
+  - Based on channel $SD$s across epochs
+
+## Detect missing epochs
+
+- Requires log file column with the EEG trigger for every trial
+
+- Specify name of this column as `triggers_column = ...`
+
+- Pipeline magically detects and deletes log file trials with missing EEG
+
+```{r, echo=FALSE, fig.align="right", out.width="30%"}
+figure("figures/magic.jpg")
 ```
 
-## One more thing
+## Time-frequency analysis
 
-::: columns
+```{r, echo=FALSE, fig.align="center", out.width="80%"}
+figure("figures/morlet.png")
+```
 
-:::: column
+\tiny
+
+See https://github.com/alexenge/tfr-workshop
+
+## Time-frequency analysis
 
 ```{r, eval=FALSE}
-# Auto-match log files to triggers
-triggers_column = "trigger",
+# Time-frequency analysis options
+perform_tfr = TRUE,
+tfr_components = list(
+  "name" = list("alpha"),
+  "tmin" = list(0.0), "tmax" = list(0.2),
+  "fmin" = list(8.0), "fmax" = list(14.0),
+  "roi" = list(c("PO9", "PO7", "PO3", "POz", "PO4", "PO8", "PO10", "O1", "Oz", "O2"))
+)
 ```
 
-- Have such a column? Great!
+- `tfr_components` extracts single trial power values
 
-- If not, create in R and pass data frames as `log_files`
+- Can additionally specify:
 
-::::
+  - Morlet frequencies (`tfr_freqs`, default 4, 5, 6, ..., 40 Hz)
+  
+  - Numbers of cycles (`tfr_cycles`, default 2, 2.5, 3, ..., 20)
+  
+  - Baseline window (`tfr_baseline`, default -450 ms to -50 ms)
+  
+  - Baseline method (`tfr_method`, default percent signal change)
 
-:::: column
+## Time-frequency analysis
 
-```{r, echo=FALSE, fig.align="right", out.width="100%"}
-include_if_exists("slides/figures/one_more_thing.jpeg")
+```{r, echo=FALSE, fig.align="center", out.width="100%"}
+figure("figures/tfr.png")
 ```
-
-::::
-
-:::
 
 ## Plans
 
-- Improve documentation + tests
+- Improve documentation
 
-- More detailed QC reports
+- Unit tests
+
+- RIDE correction for speech artifacts
 
 - Mixed models with `pymer4` (?)
 
@@ -477,10 +541,8 @@ include_if_exists("slides/figures/one_more_thing.jpeg")
 
 ## Thanks
 
-\vspace{1cm}
-
-```{r, echo=FALSE, fig.align="center", out.width="50%"}
-include_if_exists("slides/figures/xkcd.png")
+```{r, echo=FALSE, fig.align="center", out.width="80%"}
+figure("figures/nordstream.jpeg")
 ```
 
 ## References
