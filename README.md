@@ -5,9 +5,9 @@
 ![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/actions/workflow/status/alexenge/hu-neuro-pipeline-workshop/main.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-<img src="https://raw.githubusercontent.com/alexenge/hu-neuro-pipeline-workshop/main/figures/love.png" width="600">
-
 A workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package for single trial EEG processing
+
+<img src="https://raw.githubusercontent.com/alexenge/hu-neuro-pipeline-workshop/main/figures/love.png" width="600">
 
 ## Usage
 
