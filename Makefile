@@ -1,13 +1,13 @@
 # User-defined variables
-DOCKER_USER		:= alexenge
-IMAGE_VERSION	:= latest
+DOCKER_USER	:= alexenge
+IMAGE_VERSION := latest
 
 # Automatic workflow variables
-PROJECT_DIR		:= $(CURDIR)
-PROJECT_NAME	:= $(notdir $(CURDIR))
-IMAGE_TAG 		:= $(DOCKER_USER)/$(PROJECT_NAME)
-REMOTE_DIR		:= /home/rstudio/project
-SHELL			:= bash
+PROJECT_DIR	:= $(CURDIR)
+PROJECT_NAME := $(notdir $(CURDIR))
+IMAGE_TAG := $(DOCKER_USER)/$(PROJECT_NAME)
+REMOTE_DIR := /home/rstudio/project
+SHELL := bash
 
 # If DOCKER=TRUE, do stuff inside the Docker container
 ifeq ($(DOCKER), TRUE)
