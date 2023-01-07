@@ -15,13 +15,13 @@ A workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-
 
 - Check out the [R Markdown version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.Rmd) or [PDF version](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.pdf) of the slides
 
-### Interactive version, cloud-based
+### Interactive version, in the cloud
   
 - Hit [this link](https://mybinder.org/v2/gh/alexenge/hu-neuro-pipeline-workshop.git/HEAD?urlpath=rstudio) or the "launch binder" button
 
 - Run the "Minimal example" in the [`slides.Rmd`](https://github.com/alexenge/hu-neuro-pipeline-workshop/blob/main/slides.Rmd) file to see the pipeline in action
 
-### Interactive version, local machine
+### Interactive version, on your own machine
 
 1. If necessary, install [R](https://ftp.fau.de/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download/)
 
