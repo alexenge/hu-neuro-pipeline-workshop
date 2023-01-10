@@ -150,6 +150,16 @@ res <- pipeline$group_pipeline(...)
 
 ## Minimal example
 
+```{r, echo=FALSE, fig.align="center", out.width="70%"}
+figure("figures/ucap.png")
+```
+
+\tiny
+
+For details, see Frömer et al. (2018), https://doi.org/10.3389/fnins.2018.00048
+
+## Minimal example
+
 ```{r, eval=FALSE}
 # Import the Python package
 pipeline <- reticulate::import("pipeline")
@@ -176,12 +186,6 @@ res <- pipeline$group_pipeline(
   # Averaging options
   average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 )
-```
-
-## Minimal example
-
-```{r, echo=FALSE, fig.align="center", out.width="70%"}
-figure("figures/ucap.png")
 ```
 
 ## Pipeline inputs
@@ -470,13 +474,13 @@ print(na.omit(clusters))
 
   - Based on channel $SD$s across epochs
 
-## Detect missing epochs
+## Detecting missing epochs
 
-- Requires log file column with the EEG trigger for every trial
-
-- Specify name of this column as `triggers_column = ...`
+- Requires log file column (`triggers_column`) with the EEG trigger for every trial
 
 - Pipeline magically detects and deletes log file trials with missing EEG
+
+\bigskip
 
 ```{r, echo=FALSE, fig.align="right", out.width="30%"}
 figure("figures/magic.jpg")
@@ -507,7 +511,7 @@ tfr_components = list(
 
 - `tfr_components` extracts single trial power values
 
-- Can additionally specify:
+- Additional options:
 
   - Morlet frequencies (`tfr_freqs`, default 4, 5, 6, ..., 40 Hz)
   
@@ -525,7 +529,7 @@ figure("figures/tfr.png")
 
 ## Plans
 
-- Improve documentation
+- Proper documentation / preprint
 
 - Unit tests
 
