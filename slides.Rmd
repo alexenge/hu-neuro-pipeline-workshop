@@ -70,7 +70,7 @@ figure("figures/pokemon.jpg")
 
 - Open source
 
-  - > 300 contributors on GitHub (January 2023)
+  - \> 300 contributors on GitHub (January 2023)
 
   - Funded by NIH, NSF, ERC, Google, Amazon, ...
 
