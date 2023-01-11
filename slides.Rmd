@@ -41,6 +41,8 @@ figure("figures/fromer.png")
 
   - Unbalanced designs
 
+  - Brain--behavior associations
+
 ## Python implementation
 
 ```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
@@ -68,7 +70,7 @@ figure("figures/pokemon.jpg")
 
 - Open source
 
-  - 329 contributors on GitHub (January 2023)
+  - > 300 contributors on GitHub (January 2023)
 
   - Funded by NIH, NSF, ERC, Google, Amazon, ...
 
@@ -515,7 +517,7 @@ tfr_components = list(
 
   - Morlet frequencies (`tfr_freqs`, default 4, 5, 6, ..., 40 Hz)
   
-  - Numbers of cycles (`tfr_cycles`, default 2, 2.5, 3, ..., 20)
+  - Morlet no. of cycles (`tfr_cycles`, default 2, 2.5, 3, ..., 20)
   
   - Baseline window (`tfr_baseline`, default -450 ms to -50 ms)
   
@@ -544,10 +546,6 @@ figure("figures/tfr.png")
 - Your ideas + contributions?
 
 ## Thanks
-
-```{r, echo=FALSE, fig.align="center", out.width="80%"}
-figure("figures/nordstream.jpeg")
-```
 
 ## References
 
