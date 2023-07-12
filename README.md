@@ -2,7 +2,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alexenge/hu-neuro-pipeline-workshop.git/HEAD?urlpath=rstudio)
 [![Made with R Markdown](https://img.shields.io/badge/Made%20with-R%20Markdown-blue)](https://rmarkdown.rstudio.com/)
-![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/actions/workflow/status/alexenge/hu-neuro-pipeline-workshop/main.yml)
+[![![GitHub Workflow Status](https://github.com/alexenge/docker_images/actions/workflows/main.yml)](https://img.shields.io/github/actions/workflow/status/alexenge/hu-neuro-pipeline-workshop/main.yml)](https://github.com/alexenge/hu-neuro-pipeline-workshop/actions)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 A workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-neuro-pipeline) package for single trial EEG processing
@@ -23,9 +23,9 @@ A workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-
 
 ### Interactive version, on your own machine
 
-1. If necessary, install [R](https://ftp.fau.de/cran/) and [RStudio](https://www.rstudio.com/products/rstudio/download/)
+1. If necessary, install [R](https://ftp.fau.de/cran/) and [RStudio](https://posit.co/download/rstudio-desktop)
 
-2. Follow the [installation instructions](https://github.com/alexenge/hu-neuro-pipeline#1-installation) for the pipeline
+2. Follow the [installation instructions](https://hu-neuro-pipeline.readthedocs.io/en/latest/installation.html) for the pipeline
 
 3. [Download](https://github.com/alexenge/hu-neuro-pipeline-workshop/archive/refs/heads/main.zip) and un-zip or `git clone` the workshop repository
 
