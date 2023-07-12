@@ -5,7 +5,7 @@ subtitle: |
   for processing single trial EEG data
 author: "Alexander Enge"
 institute: "Neuro Lab @ Humboldt-Universität zu Berlin"
-date: 2023-01-11
+date: 2023-07-12
 classoption: "t"
 bibliography: "misc/references.bib"
 csl: "misc/template/apa.csl"
@@ -108,9 +108,25 @@ figure("slides/figures/github_pypi.png")
 
 ## Python implementation
 
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="45%"}
+\vspace{-0.7cm}
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="40%"}
 figure("figures/flowchart.png")
 ```
+
+## Python implementation
+
+\vspace{-1.4cm}
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/docs.png")
+```
+
+\vspace{-0.6cm}
+
+\tiny
+
+Documentation at <https://hu-neuro-pipeline.readthedocs.io>
 
 ## Installation
 
@@ -158,14 +174,11 @@ figure("figures/ucap.png")
 
 \tiny
 
-For details, see Frömer et al. (2018), https://doi.org/10.3389/fnins.2018.00048
+For details, see Frömer et al. (2018), <https://doi.org/10.3389/fnins.2018.00048>
 
 ## Minimal example
 
 ```{r, eval=FALSE}
-# Import the Python package
-pipeline <- reticulate::import("pipeline")
-
 # Run the pipeline
 res <- pipeline$group_pipeline(
   # Input/output paths
@@ -186,7 +199,12 @@ res <- pipeline$group_pipeline(
     )
   ),
   # Averaging options
-  average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
+  average_by = list(
+    blurr_left = "n_b == 'blurr' and DeviantPosRL == 'li' and RT > 200",
+    blurr_right = "n_b == 'blurr' and DeviantPosRL == 're' and RT > 200",
+    normal_right = "n_b == 'normal' and DeviantPosRL == 're' and RT > 200",
+    normal_left = "n_b == 'normal' and DeviantPosRL == 're' and RT > 200"
+  )
 )
 ```
 
@@ -246,10 +264,19 @@ components = list(
 
 ```{r, eval=FALSE}
 # Averaging options
-average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
+average_by = list(
+  blurr_left = "n_b == 'blurr' and DeviantPosRL == 'li' and RT > 200",
+  blurr_right = "n_b == 'blurr' and DeviantPosRL == 're' and RT > 200",
+  normal_right = "n_b == 'normal' and DeviantPosRL == 're' and RT > 200",
+  normal_left = "n_b == 'normal' and DeviantPosRL == 're' and RT > 200"
+)
 ```
 
-- List of column names (for main effects) and combinations of column names (for interaction effects, separated by `"/"`)
+- List with all (combinations of) conditions to create by-participant averages for:
+
+    - List keys are custom labels for each average
+
+    - List values are query strings to select log file rows (trials/epochs)
 
 ## More pipeline inputs
 
@@ -271,7 +298,7 @@ average_by = c("n_b", "DeviantPosRL", "n_b/DeviantPosRL")
 
 \tiny
 
-See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/inputs.md
+See <https://hu-neuro-pipeline.readthedocs.io/en/latest/usage_inputs.html>
 
 ## Pipeline outputs
 
@@ -292,9 +319,7 @@ evokeds <- read_csv("output/ave.csv")
 config <- jsonlite::read_json("output/config.json")
 ```
 
-\tiny
-
-See https://github.com/alexenge/hu-neuro-pipeline/blob/main/docs/outputs.md
+See <https://hu-neuro-pipeline.readthedocs.io/en/latest/usage_outputs.html>
 
 ## Pipeline outputs
 
@@ -329,7 +354,7 @@ ggplot(trials, aes(x = DeviantPosRL, y = N2, color = n_b, group = n_b)) +
   geom_point(position = position_jitterdodge(0.3), alpha = 0.1) +
   stat_summary(
     geom = "line",
-    size = 2.,
+    linewidth = 2.0,
     position = position_dodge(0.75)
   ) +
   theme_classic(base_size = 30)
@@ -346,14 +371,14 @@ print(evokeds)
 
 ```{r, eval=FALSE, out.width="50%", message=FALSE, warning=FALSE}
 # Evokeds by participant/condition
-evokeds %>%
-  filter(average_by == "n_b/DeviantPosRL") %>%
+evokeds |>
+  separate_wider_delim(label, delim = "_", names = c("n_b", "DeviantPosRL")) |>
   Rmisc::summarySEwithin(
     measurevar = "N2",
     withinvars = c("time", "n_b", "DeviantPosRL"),
     idvar = "participant_id"
-  ) %>%
-  mutate(time = as.numeric(levels(time))[time]) %>%
+  ) |>
+  mutate(time = as.numeric(levels(time))[time]) |>
   ggplot(aes(
     x = time,
     y = N2,
@@ -365,7 +390,7 @@ evokeds %>%
   facet_wrap(~DeviantPosRL) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_ribbon(color = NA, alpha = 0.2) +
   coord_cartesian(xlim = c(-0.2, 0.8)) +
   theme_classic(base_size = 20)
@@ -375,14 +400,14 @@ evokeds %>%
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=5}
 # Evokeds by participant/condition (core repeated for creating the plot)
-evokeds %>%
-  filter(average_by == "n_b/DeviantPosRL") %>%
+evokeds |>
+  separate_wider_delim(label, delim = "_", names = c("n_b", "DeviantPosRL")) |>
   Rmisc::summarySEwithin(
     measurevar = "N2",
     withinvars = c("time", "n_b", "DeviantPosRL"),
     idvar = "participant_id"
-  ) %>%
-  mutate(time = as.numeric(levels(time))[time]) %>%
+  ) |>
+  mutate(time = as.numeric(levels(time))[time]) |>
   ggplot(aes(
     x = time,
     y = N2,
@@ -394,7 +419,7 @@ evokeds %>%
   facet_wrap(~DeviantPosRL) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_ribbon(color = NA, alpha = 0.2) +
   coord_cartesian(xlim = c(-0.2, 0.8)) +
   theme_classic(base_size = 20)
@@ -425,9 +450,8 @@ lengths(config$auto_rejected_epochs)
 ```{r, eval=FALSE}
 # Permutation test input
 perm_contrasts = list(
-  c("blurr", "normal"),
-  c("blurr/re", "blurr/li"),
-  c("normal/re", "normal/li")
+  c("blurr_left", "normal_left"),
+  c("blurr_right", "normal_right")
 )
 ```
 
@@ -452,11 +476,11 @@ print(na.omit(clusters))
   
   - Can specify initial number of principal components with `ica_n_components`
   
-  - Automatic detection + exclusion of eye movement components based on correlation with HEOG and VEOG \tiny (see https://mne.tools/stable/generated/mne.preprocessing.ICA.html#mne.preprocessing.ICA.find_bads_eog) \normalsize
+  - Automatic detection + exclusion of eye movement components based on correlation with HEOG and VEOG \tiny (see <https://mne.tools/stable/generated/mne.preprocessing.ICA.html#mne.preprocessing.ICA.find_bads_eog>) \normalsize
 
   - Verify in QC reports
 
-  - Other selection methods (manual selection, [ICLabel](https://labeling.ucsd.edu/tutorial/about)) not yet implemented
+  - Other selection methods (manual selection, [ICLabel](<https://labeling.ucsd.edu/tutorial/about>)) not yet implemented
 
 ## Artifact rejection
 
@@ -496,7 +520,7 @@ figure("figures/morlet.png")
 
 \tiny
 
-See https://github.com/alexenge/tfr-workshop
+See <https://github.com/alexenge/tfr-workshop>
 
 ## Time-frequency analysis
 
@@ -531,19 +555,23 @@ figure("figures/tfr.png")
 
 ## Plans
 
-- Proper documentation / preprint
+- Enhance documentation (examples, boilerplate, preprint)
 
 - Unit tests
 
 - RIDE correction for speech artifacts
 
-- Mixed models with `pymer4` (?)
+- Mixed models with `pymer4` or `bambi`
 
 - Better permutation tests [@frossard2021; @frossard2022]
 
 - BIDS interface
 
 - Your ideas + contributions?
+
+\tiny
+
+See <https://github.com/alexenge/hu-neuro-pipeline/issues>
 
 ## Thanks
 

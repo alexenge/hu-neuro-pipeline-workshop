@@ -95,11 +95,12 @@
             ]
         ]
     },
-    "average_by": [
-        "n_b",
-        "DeviantPosRL",
-        "n_b/DeviantPosRL"
-    ],
+    "average_by": {
+        "blurr_left": "n_b == 'blurr' and DeviantPosRL == 'li' and RT > 200",
+        "blurr_right": "n_b == 'blurr' and DeviantPosRL == 're' and RT > 200",
+        "normal_right": "n_b == 'normal' and DeviantPosRL == 're' and RT > 200",
+        "normal_left": "n_b == 'normal' and DeviantPosRL == 're' and RT > 200"
+    },
     "perform_tfr": false,
     "tfr_subtract_evoked": false,
     "tfr_freqs": [
@@ -195,16 +196,12 @@
     },
     "perm_contrasts": [
         [
-            "blurr",
-            "normal"
+            "blurr_left",
+            "normal_left"
         ],
         [
-            "blurr/re",
-            "blurr/li"
-        ],
-        [
-            "normal/re",
-            "normal/li"
+            "blurr_right",
+            "normal_right"
         ]
     ],
     "perm_tmin": 0.0,
@@ -224,5 +221,13 @@
             1616
         ],
         "07": []
+    },
+    "package_versions": {
+        "python": "3.10.11",
+        "pipeline": "0.7.0",
+        "mne": "1.4.2",
+        "numpy": "1.24.3",
+        "pandas": "2.0.2",
+        "scikit-learn": "1.2.2"
     }
 }
