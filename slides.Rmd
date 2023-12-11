@@ -1,11 +1,8 @@
 ---
-title: "`hu-neuro-pipeline`"
-subtitle: |
-  A Python-based and R-compatible pipeline \
-  for processing single trial EEG data
+title: "Analyzing single trial EEG data using the `hu-neuro-pipeline` package"
 author: "Alexander Enge"
 institute: "Neuro Lab @ Humboldt-Universität zu Berlin"
-date: 2023-07-12
+date: 2023-12-13
 classoption: "t"
 bibliography: "misc/references.bib"
 csl: "misc/template/apa.csl"
@@ -17,7 +14,7 @@ output:
 
 ## The @fromer2018 pipeline
 
-```{r, echo=FALSE, message=FALSE, fig.align="center", out.width="100%"}
+```{r, echo=FALSE, message=FALSE}
 scale_colour_discrete <- function(...) scale_color_brewer(..., palette = "Set1")
 scale_fill_discrete <- function(...) scale_fill_brewer(..., palette = "Set1")
 
@@ -25,7 +22,9 @@ figure <- function(path, ...) {
   require(here)
   if (file.exists(here(path))) knitr::include_graphics(here(path), ...)
 }
+```
 
+```{r, echo=FALSE, message=FALSE, fig.align="center", out.width="100%"}
 figure("figures/fromer.png")
 ```
 
@@ -70,7 +69,7 @@ figure("figures/pokemon.jpg")
 
 - Open source
 
-  - \> 300 contributors on GitHub (January 2023)
+  - \> 350 contributors on GitHub (December 2023)
 
   - Funded by NIH, NSF, ERC, Google, Amazon, ...
 
@@ -98,7 +97,9 @@ figure("figures/mne.png")
 
   - Automatic missing trial detection
 
-- Code standards + version control \tiny (https://github.com/alexenge/hu-neuro-pipeline/)
+  - Example datasets
+
+- Code standards, documentation, version control \tiny (https://github.com/alexenge/hu-neuro-pipeline/)
 
 \bigskip
 
@@ -134,7 +135,7 @@ For Python users:
 
 ```{bash, eval=FALSE}
 # Install via the command line from the Python Packaging Index (PyPI)
-python3 -m pip install hu-neuro-pipeline
+pip install hu-neuro-pipeline
 ```
 
 For R users:
@@ -168,25 +169,31 @@ res <- pipeline$group_pipeline(...)
 
 ## Minimal example
 
-```{r, echo=FALSE, fig.align="center", out.width="70%"}
+```{r, eval=FALSE}
+ucap_paths <- pipeline$datasets$get_ucap(participants = 2, path = "data")
+```
+
+\smallskip
+
+```{r, echo=FALSE, fig.align="center", out.width="60%"}
 figure("figures/ucap.png")
 ```
 
 \tiny
 
-For details, see Frömer et al. (2018), <https://doi.org/10.3389/fnins.2018.00048>
+For details, see @fromer2018
 
 ## Minimal example
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, results="hide"}
 # Run the pipeline
 res <- pipeline$group_pipeline(
   # Input/output paths
-  vhdr_files = "data/raw",
-  log_files = "data/log",
+  raw_files = "data/ucap/raw",
+  log_files = "data/ucap/log",
   output_dir = "output",
   # Preprocessing options
-  besa_files = "data/cali",
+  besa_files = "data/ucap/cali",
   # Epoching options
   triggers = c(201:208, 211:218),
   components = list(
@@ -212,7 +219,7 @@ res <- pipeline$group_pipeline(
 
 ```{r, eval=FALSE}
 # Input/output paths
-vhdr_files = "data/raw",
+raw_files = "data/raw",
 log_files = "data/log",
 output_dir = "output",
 ```
@@ -234,6 +241,8 @@ besa_files = "data/cali",
 
 - Default bandpass filter (0.1--40 Hz)
 
+- Default re-referencing (common average)
+
 ## Pipeline inputs
 
 ```{r, eval=FALSE}
@@ -254,11 +263,32 @@ components = list(
 
 - List of ERP component definitions:
 
-    - `name`: Column names for each component
+    - `name`: Custom label for each component
 
     - `tmin` + `tmax`: Onset and offset times (in s)
 
     - `roi`: List of channel names for each component
+
+## Pipeline inputs
+
+```{r, eval=FALSE}
+# Epoching options
+triggers = c(201:208, 211:218),
+components = list(
+  "name" = list("N2", "P3b"),
+  "tmin" = list(0.25, 0.4),
+  "tmax" = list(0.35, 0.55),
+  "roi" = list(
+    c("FC1", "FC2", "C1", "C2", "Cz"),
+    c("CP3", "CP1", "CPz", "CP2", "CP4", "P3", "Pz", "P4", "PO3", "POz", "PO4")
+  )
+),
+```
+
+- Default baseline correction (-0.2 -- 0.0 s)
+
+- Default rejection of bad epochs (peak-to-peak ampl. > 200 µV)
+
 
 ## Pipeline inputs
 
@@ -274,7 +304,7 @@ average_by = list(
 
 - List with all (combinations of) conditions to create by-participant averages for:
 
-    - List keys are custom labels for each average
+    - List names are custom labels for each average
 
     - List values are query strings to select log file rows (trials/epochs)
 
@@ -318,6 +348,8 @@ trials <- read_csv("output/trials.csv")
 evokeds <- read_csv("output/ave.csv")
 config <- jsonlite::read_json("output/config.json")
 ```
+
+\tiny
 
 See <https://hu-neuro-pipeline.readthedocs.io/en/latest/usage_outputs.html>
 
@@ -370,7 +402,7 @@ print(evokeds)
 ## Pipeline outputs
 
 ```{r, eval=FALSE, out.width="50%", message=FALSE, warning=FALSE}
-# Evokeds by participant/condition
+# Time course plot with within-participant standard errors
 evokeds |>
   separate_wider_delim(label, delim = "_", names = c("n_b", "DeviantPosRL")) |>
   Rmisc::summarySEwithin(
@@ -445,6 +477,14 @@ lengths(config$auto_rejected_epochs)
 
 - Automated QC reports (`reports_dir`)
 
+## QC reports
+
+\vspace{-0.7cm}
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="90%"}
+figure("figures/report.png")
+```
+
 ## Cluster-based permutation tests
 
 ```{r, eval=FALSE}
@@ -456,7 +496,7 @@ perm_contrasts = list(
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-# Permutation test outputs
+# Permutation test output
 clusters <- read_csv("output/clusters.csv") # or clusters <- res[[4]]
 print(na.omit(clusters))
 ```
@@ -482,6 +522,30 @@ print(na.omit(clusters))
 
   - Other selection methods (manual selection, [ICLabel](<https://labeling.ucsd.edu/tutorial/about>)) not yet implemented
 
+## Artifact correction
+
+- Coming soon: **Residue iteration decomposition (RIDE)**
+
+  - For correcting speech artifacts
+
+  - Based on iterative separation of stimulus- and response-related ERP components [@ouyang2011; @ouyang2015; @ouyang2016]
+
+  - Subtract response-related component from single trials using their voice onset times
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="80%"}
+figure("figures/ride.png")
+```
+
+\tiny
+
+See <https://github.com/kirstenstark/eeg-ride>
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
+figure("figures/ride_lying.png")
+```
+
 ## Artifact rejection
 
 - Per-channel peak-to-peak amplitude threshold via `reject_peak_to_peak` (default: `200.0`)
@@ -499,6 +563,12 @@ print(na.omit(clusters))
 - Experimental: Automatic bad channel detection (`bad_channels = "auto"`)
 
   - Based on channel $SD$s across epochs
+
+\vspace{0.4cm}
+
+```{r, echo=FALSE, fig.align="right", out.width="30%"}
+figure("figures/automate.jpg")
+```
 
 ## Detecting missing epochs
 
@@ -549,17 +619,55 @@ tfr_components = list(
 
 ## Time-frequency analysis
 
-```{r, echo=FALSE, fig.align="center", out.width="100%"}
+```{r, echo=FALSE, fig.align="center", out.width="95%"}
 figure("figures/tfr.png")
 ```
+
+\tiny
+
+See @enge2023a
+
+## Example datasets
+
+:::::::::::::: {.columns}
+
+::: {.column width="62%"}
+```{r, echo=FALSE, fig.align="center", out.width="95%"}
+figure("figures/erp_core.png")
+```
+
+\bigskip
+
+\tiny
+
+See @kappenman2021
+:::
+
+::: {.column width="38%"}
+```{r, eval=FALSE}
+# Download example data from UCAP
+pipeline$datasets$get_ucap(
+  participants = 10,
+  path = "data"
+)
+
+# Download example data from ERP CORE
+pipeline$datasets$get_erpcore("N170")
+pipeline$datasets$get_erpcore("MMN")
+pipeline$datasets$get_erpcore("N2pc")
+pipeline$datasets$get_erpcore("N400")
+pipeline$datasets$get_erpcore("P3")
+pipeline$datasets$get_erpcore("ERN")
+```
+:::
+
+::::::::::::::
 
 ## Plans
 
 - Enhance documentation (examples, boilerplate, preprint)
 
 - Unit tests
-
-- RIDE correction for speech artifacts
 
 - Mixed models with `pymer4` or `bambi`
 
@@ -573,8 +681,22 @@ figure("figures/tfr.png")
 
 See <https://github.com/alexenge/hu-neuro-pipeline/issues>
 
+## Learning/teaching EEG analysis
+
+\vspace{-0.6cm}
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/intro_to_eeg.png")
+```
+
+\vspace{-0.6cm}
+
+\tiny
+
+See <https://alexenge.github.io/intro-to-eeg>
+
 ## Thanks
 
 ## References
 
-\scriptsize
+\tiny
