@@ -4,7 +4,12 @@
 .DS_Store
 /data/
 /figures/*
+!/figures/docs.png
+!/figures/intro_to_eeg.png
 !/figures/flowchart.png
 !/figures/love.png
 !/figures/morlet.png
+!/figures/report.png
+!/figures/ride_lying.png
+!/figures/ride.png
 !/figures/tfr.png
