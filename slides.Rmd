@@ -1,6 +1,6 @@
 ---
 title: "Analyzing single trial EEG data using the `hu-neuro-pipeline` package"
-author: "Alexander Enge"
+author: "Alexander Enge & Kirsten Stark"
 institute: "Neuro Lab @ Humboldt-Universität zu Berlin"
 date: 2023-12-13
 classoption: "t"
@@ -544,6 +544,30 @@ See <https://github.com/kirstenstark/eeg-ride>
 
 ```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
 figure("figures/ride_lying.png")
+```
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/ride_lying_1.png")
+```
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/ride_lying_2.png")
+```
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/ride_lying_3.png")
+```
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
+figure("figures/ride_lying_4.png")
 ```
 
 ## Artifact rejection
