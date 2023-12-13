@@ -524,6 +524,18 @@ print(na.omit(clusters))
 
 ## Artifact correction
 
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="80%"}
+figure("figures/oc_comparison_sd.png")
+```
+
+## Artifact correction
+
+```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="80%"}
+figure("figures/oc_comparison_sme.png")
+```
+
+## Artifact correction
+
 - Coming soon: **Residue iteration decomposition (RIDE)**
 
   - For correcting speech artifacts
