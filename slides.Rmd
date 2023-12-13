@@ -552,36 +552,6 @@ figure("figures/ride.png")
 
 See <https://github.com/kirstenstark/eeg-ride>
 
-## Artifact correction
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="60%"}
-figure("figures/ride_lying.png")
-```
-
-## Artifact correction
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
-figure("figures/ride_lying_1.png")
-```
-
-## Artifact correction
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
-figure("figures/ride_lying_2.png")
-```
-
-## Artifact correction
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
-figure("figures/ride_lying_3.png")
-```
-
-## Artifact correction
-
-```{r, echo=FALSE, fig.align="center", message=FALSE, out.width="100%"}
-figure("figures/ride_lying_4.png")
-```
-
 ## Artifact rejection
 
 - Per-channel peak-to-peak amplitude threshold via `reject_peak_to_peak` (default: `200.0`)
