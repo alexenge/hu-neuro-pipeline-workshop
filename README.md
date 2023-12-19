@@ -33,9 +33,4 @@ A workshop introducing the [`hu-neuro-pipeline`](https://github.com/alexenge/hu-
 
     - Using your own data: Change the input file paths (`vhdr_files`, `log_files`, and `besa_files`) to match the location of your data
 
-    - Using demo data from our lab: Download two participants from the UCAP dataset ([Frömer et al., *Front. Neurosci.*, 2018](https://doi.org/10.3389/fnins.2018.00048)) by running the following piece of R code
-
-```r
-pipeline <- import("pipeline")
-pipeline$datasets$ucap$get_paths(n_participants = 2)
-```
+    - Using demo data from our lab: Download two or more participants from the UCAP dataset ([Frömer et al., *Front. Neurosci.*, 2018](https://doi.org/10.3389/fnins.2018.00048)) by running the `get_ucap()` R code snippet in the script
